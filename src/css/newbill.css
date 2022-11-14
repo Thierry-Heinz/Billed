@@ -21,6 +21,15 @@
   box-sizing: border-box;
   border-radius: 5px;
 }
+.red-border {
+  opacity: 0.5;
+  border: 2px solid #ff0000 !important;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.error {
+  color: #ff0000;
+}
 
 label {
   font-style: normal;

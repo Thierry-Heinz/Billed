@@ -35,7 +35,7 @@ export const card = (bill) => {
   firstAndLastNames.split('.')[1] : firstAndLastNames
 
   return (`
-    <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${bill.id}'>
+    <div class='bill-card' id='open-bill${bill.id}' data-select="unselected" data-testid='open-bill${bill.id}'>
       <div class='bill-card-name-container'>
         <div class='bill-card-name'> ${firstName} ${lastName} </div>
         <span class='bill-card-grey'> ... </span>
@@ -86,24 +86,32 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
-    if (this.counter === undefined || this.id !== bill.id) this.counter = 0
+    console.log(e);
+    e.stopImmediatePropagation();
+    const dataSelect = e.currentTarget.dataset.select;
+    // if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
-    if (this.counter % 2 === 0) {
+    // if (this.counter % 2 === 0) {
+      if(dataSelect == "unselected") {
       bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
+        $(`#open-bill${b.id}`).attr("data-select", "unselected")
       })
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
+      $(`#open-bill${bill.id}`).attr("data-select", "selected")
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
       $('.vertical-navbar').css({ height: '150vh' })
-      this.counter ++
+      
+      // this.counter ++
     } else {
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
+      $(`#open-bill${bill.id}`).attr("data-select", "unselected")
 
       $('.dashboard-right-container div').html(`
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
       $('.vertical-navbar').css({ height: '120vh' })
-      this.counter ++
+      // this.counter ++
     }
     $('#icon-eye-d').click(this.handleClickIconEye)
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
@@ -131,18 +139,25 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0
+    const dataToggle = e.currentTarget.dataset.toggle;
+    // console.log(dataToggle)
+
+    // if (this.counter === undefined || this.index !== index) this.counter = 0
     if (this.index === undefined || this.index !== index) this.index = index
-    if (this.counter % 2 === 0) {
+    if(dataToggle == 'collapsed') {
+    // if (this.counter % 2 === 0) {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
-      this.counter ++
+        e.currentTarget.dataset.toggle = "expanded"
+      // this.counter ++
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
-      this.counter ++
+      // this.counter ++
+      
+        e.currentTarget.dataset.toggle = "collapsed"
     }
 
     bills.forEach(bill => {

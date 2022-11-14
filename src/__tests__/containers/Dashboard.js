@@ -4,18 +4,19 @@
 
 import {fireEvent, screen, waitFor} from "@testing-library/dom"
 import userEvent from '@testing-library/user-event'
-import DashboardFormUI from "../views/DashboardFormUI.js"
-import DashboardUI from "../views/DashboardUI.js"
-import Dashboard, { filteredBills, cards } from "../containers/Dashboard.js"
-import { ROUTES, ROUTES_PATH } from "../constants/routes"
-import { localStorageMock } from "../__mocks__/localStorage.js"
-import mockStore from "../__mocks__/store"
-import { bills } from "../fixtures/bills"
-import router from "../app/Router"
+import DashboardFormUI from "../../views/DashboardFormUI.js"
+import DashboardUI from "../../views/DashboardUI.js"
+import Dashboard, { filteredBills, cards } from "../../containers/Dashboard"
+import { ROUTES, ROUTES_PATH } from "../../constants/routes"
+import { localStorageMock } from "../../__mocks__/localStorage.js"
+import mockStore from "../../__mocks__/store"
+import { bills } from "../../fixtures/bills"
+import router from "../../app/Router"
 
-jest.mock("../app/store", () => mockStore)
+jest.mock("../../app/store", () => mockStore)
 
 describe('Given I am connected as an Admin', () => {
+
   describe('When I am on Dashboard page, there are bills, and there is one pending', () => {
     test('Then, filteredBills by pending status should return 1 bill', () => {
       const filtered_bills = filteredBills(bills, "pending")
@@ -40,6 +41,7 @@ describe('Given I am connected as an Admin', () => {
       expect(screen.getAllByText('Loading...')).toBeTruthy()
     })
   })
+
   describe('When I am on Dashboard page but back-end send an error message', () => {
     test('Then, Error page should be rendered', () => {
       document.body.innerHTML = DashboardUI({ error: 'some error message' })
@@ -159,6 +161,7 @@ describe('Given I am connected as an Admin', () => {
     })
   })
 })
+
 
 describe('Given I am connected as Admin, and I am on Dashboard page, and I clicked on a pending bill', () => {
   describe('When I click on accept button', () => {
