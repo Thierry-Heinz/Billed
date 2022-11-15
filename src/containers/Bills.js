@@ -21,10 +21,14 @@ export default class {
   }
 
   handleClickIconEye = (icon) => {
+    const modalFile = $('#modaleFile');
+    console.log(modalFile)
+    const modalBody = modalFile.find(".modal-body");
+    console.log(modalBody)
     const billUrl = icon.getAttribute("data-bill-url")
-    const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
-    $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
-    $('#modaleFile').modal('show')
+    const imgWidth = Math.floor(modalFile.width() * 0.5)
+    modalBody.html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`);
+    modalFile.modal('show')
   }
 
   getBills = () => {
