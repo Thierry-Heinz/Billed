@@ -25,7 +25,7 @@ export default class {
     const modalBody = $("#modaleFile .modal-body");
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor(modalFile.width() * 0.5)
-    modalBody.html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`);
+    modalBody.html(`<div style='text-align: center;' class="bill-proof-container" data-testid='img-proof-modal' ><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`);
     modalFile.modal('show')
   }
 

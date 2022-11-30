@@ -29,10 +29,6 @@ describe("Given I am connected as an employee", () => {
     })
   })
 
-/*   test("Then, it should prevent submit when a date is not selected", () => {
-
-  }) */
-
   test("Then, it should display an error message when the file type is not an image" , () => {
 		const file = new File([""], "filename.txt", {type: "text/plain", lastModified:new Date(0)})
 		const inputFile = screen.getByTestId('file');
@@ -42,10 +38,10 @@ describe("Given I am connected as an employee", () => {
 	})
 
   	test("Then, it should display a blue border when the file type is an image on the input form element" , () => {
-		const file = new File(["(⌐□_□)"], "filename.png", {type: "image/png", lastModified:new Date(0)})
-		const inputFile = screen.getByTestId('file');
-		userEvent.upload(inputFile, file);
-		expect(inputFile).toHaveClass("blue-border");
+		  const file = new File(["(⌐□_□)"], "filename.png", {type: "image/png", lastModified:new Date(0)})
+		  const inputFile = screen.getByTestId('file');
+		  userEvent.upload(inputFile, file);
+		  expect(inputFile).toHaveClass("blue-border");
 	})
 
 })

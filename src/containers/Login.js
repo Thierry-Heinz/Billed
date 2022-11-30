@@ -29,10 +29,12 @@ export default class Login {
         (err) => this.createUser(user)
       )
       .then(() => {
+        console.log("-- before redirect to bills ---");
         this.onNavigate(ROUTES_PATH['Bills'])
         this.PREVIOUS_LOCATION = ROUTES_PATH['Bills']
         PREVIOUS_LOCATION = this.PREVIOUS_LOCATION
         this.document.body.style.backgroundColor="#fff"
+        console.log("-- after should be redirected to bills ---");
       })
 
   }
@@ -46,6 +48,7 @@ export default class Login {
       status: "connected"
     }
     this.localStorage.setItem("user", JSON.stringify(user))
+    console.log(user);
     this.login(user)
       .catch(
         (err) => this.createUser(user)
