@@ -1,8 +1,6 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
-
-
 import { dateFrToFormatDate } from "../app/format.js";
 
 import Actions from './Actions.js'
@@ -23,14 +21,13 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  // [BUG REPORT "Bills" CORRECTION] - Modify array elements order containing data by descending order in function of their date
+  // Correction of  the sorting of bills by date.
   if (data && data.length) {
     data.forEach((d) => {
       d.dateFormatted = dateFrToFormatDate(d.date);
     });
     data = data.sort((a, b) => (a.dateFormatted < b.dateFormatted ? 1 : -1));
   }
-  // END [BUG REPORT "Bills" CORRECTION]
   return data && data.length ? data.map((bill) => row(bill)).join("") : "";
 };
 

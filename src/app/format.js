@@ -7,7 +7,7 @@ export const formatDate = (dateStr) => {
   return `${parseInt(da)} ${month.substr(0,3)}. ${ye.toString().substr(2,4)}`
 }
 
-export function dateFrToFormatDate(dat) {
+export function dateFrToFormatDate(date) {
   const monthsDateFR = [
     "Jan.",
     "Fev.",
@@ -22,17 +22,18 @@ export function dateFrToFormatDate(dat) {
     "Nov.",
     "Dec.",
   ];
-  let formatedDate = dat;
+  let formatedDate = date;
   let arrFormatedDate = formatedDate.split(" ");
   arrFormatedDate.reverse();
-  // Year format
+
+  // format the Year
   arrFormatedDate[0] = "20" + arrFormatedDate[0];
-  // Month format
+  // format the Month
   arrFormatedDate[1] = monthsDateFR.indexOf(arrFormatedDate[1]) + 1;
   if (arrFormatedDate[1] < 10) {
     arrFormatedDate[1] = "0" + arrFormatedDate[1];
   }
-  // Day format
+  // format the Day
   if (arrFormatedDate[2] < 10) {
     arrFormatedDate[2] = "0" + arrFormatedDate[2];
   }

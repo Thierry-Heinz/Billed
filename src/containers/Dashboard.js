@@ -86,7 +86,6 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
-    console.log(e);
     e.stopImmediatePropagation();
     const dataSelect = e.currentTarget.dataset.select;
     // if (this.counter === undefined || this.id !== bill.id) this.counter = 0

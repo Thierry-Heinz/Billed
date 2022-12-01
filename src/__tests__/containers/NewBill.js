@@ -11,33 +11,24 @@ import NewBillUI from "../../views/NewBillUI.js"
 import { ROUTES, ROUTES_PATH } from "../../constants/routes"
 import { localStorageMock } from "../../__mocks__/localStorage.js"
 import mockStore from "../../__mocks__/store"
-
-
 jest.mock("../../app/store", () => mockStore)
  
 
 describe("Given I am connected as an employee", () => {
 	
 	describe("Given I am on NewBill Page", () => {  
-		
-	  beforeEach(()=> {
-		  const html = NewBillUI();
-		  document.body.innerHTML = html;
-		  
-		  Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-		  window.localStorage.setItem('user', JSON.stringify({
-			type: 'Employee',
-			email :"a@a"
-		  }));
-	  })
 
-	   afterEach(() => {
-		document.body.innerHTML = "";
-	  }); 
+	describe("When I want to upload a documents", () => {	
 
-	describe("When I want to upload a documents", () => {		
 		describe("When I upload an valid file type", ()=> {	
 			test('Then the file should be stored', () =>{
+				document.body.innerHTML = NewBillUI();
+		  
+				Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+				window.localStorage.setItem('user', JSON.stringify({
+					type: 'Employee',
+					email :"a@a"
+				}));
 				const onNavigate = (pathname) => {
 					document.body.innerHTML = ROUTES({ pathname })
 				}
@@ -64,6 +55,13 @@ describe("Given I am connected as an employee", () => {
 
 		describe("When I upload an invalid file type", ()=> {
 			test('Then the file should not be stored, and an error displayed', async () =>{
+				document.body.innerHTML = NewBillUI();
+		  
+				Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+				window.localStorage.setItem('user', JSON.stringify({
+					type: 'Employee',
+					email :"a@a"
+				}));
 				const onNavigate = (pathname) => { document.body.innerHTML = ROUTES({ pathname }) };
 				const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage });
 				const inputFile = screen.getByTestId('file');
@@ -85,6 +83,13 @@ describe("Given I am connected as an employee", () => {
 
 		describe("When I change an invalid file for a valid one", () => {
 			test('then the error message should disappear, and the file should be stored', () => {
+				document.body.innerHTML = NewBillUI();
+		  
+				Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+				window.localStorage.setItem('user', JSON.stringify({
+					type: 'Employee',
+					email :"a@a"
+				}));
 				const onNavigate = (pathname) => {
 					document.body.innerHTML = ROUTES({ pathname })
 				}
@@ -124,6 +129,14 @@ describe("Given I am connected as an employee", () => {
 	describe("When I want to submit my expense", () => {
 		describe("When I submit my form with valid values", () => {
 			test("Then the data should be stored and I should be redirected on Bills page", async () =>{
+				  
+		  		document.body.innerHTML = NewBillUI();
+		  
+				Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+				window.localStorage.setItem('user', JSON.stringify({
+					type: 'Employee',
+					email :"a@a"
+				}));
 				const onNavigate = (pathname) => {
 					document.body.innerHTML = ROUTES({ pathname })
 				} 
@@ -145,21 +158,18 @@ describe("Given I am connected as an employee", () => {
 				const fakeFile = new File(["(⌐□_□)"], "filename.png", {type: "image/png", lastModified:new Date(0)})			
 				userEvent.upload(inputFile, fakeFile);
 
-				console.log(inputFile.files.length)
 				expect(inputFile.files[0].name).toBe("filename.png");
 				
-				//const submitNewBill = jest.spyOn(newBill, 'addEventListener');
+				const submitNewBill = jest.fn((e) => e.preventDefault());
 				const formNewBill = screen.getByTestId('form-new-bill');
-				/* formNewBill.addEventlistener = jest.fn().mockImplementationOnce((event, callback) => {
-					callback();
-				}) */
+			
 				
-				//formNewBill.addEventListener("submit", submitNewBill);
+				formNewBill.addEventListener("submit", submitNewBill);
 				console.log("--- just before fire submit ---")
 
 				fireEvent.submit(formNewBill);
 
-				//expect(submitNewBill).toBeCalledWith('message', expect.any(Function), false);
+				expect(submitNewBill).toHaveBeenCalled();
 
 				expect(screen.getByText("Mes notes de frais")).toBeTruthy();
 				expect( screen.getByTestId("btn-new-bill")).toBeTruthy();
@@ -170,13 +180,20 @@ describe("Given I am connected as an employee", () => {
 
 		describe("When I submit my form with invalid values", () => {
 			test("Then I should stay on NewBill page", () => {
+				document.body.innerHTML = NewBillUI();
+		  
+				Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+				window.localStorage.setItem('user', JSON.stringify({
+					type: 'Employee',
+					email :"a@a"
+				}));
 				 const onNavigate = (pathname) => {
 					document.body.innerHTML = ROUTES({ pathname })
 				} 
 				 const newBill = new NewBill({
 					document, onNavigate, store: mockStore, localStorage: window.localStorage
 				}) 
-				//const submitNewBill = jest.fn(newBill.handleSubmit);
+				const submitNewBill = jest.fn((e) => e.preventDefault());
 				const formNewBill = screen.getByTestId('form-new-bill');
 				const inputFile = screen.getByTestId('file');
 				const errorMsg = document.createElement("span");
@@ -186,12 +203,10 @@ describe("Given I am connected as an employee", () => {
 				inputFile.after(errorMsg);
 				inputFile.classList.replace('blue-border','red-border');
 
-				//formNewBill.addEventListener("submit", submitNewBill);
-				console.log("check 1")
+				formNewBill.addEventListener("submit", submitNewBill);
 				fireEvent.submit(formNewBill);
-				console.log("check 2")
 
-				//expect(newBill.handleSubmit).toHaveBeenCalled();
+				expect(submitNewBill).toHaveBeenCalled();
 				expect(document.body.innerHTML).not.toContain("Mes notes de frais");
 				expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
 			})
@@ -204,6 +219,13 @@ describe("Given I am connected as an employee", () => {
 
 		describe("When an error 404 occures on submit",  () => {
 			test("Then an error should appear in the console", async () => {	
+				document.body.innerHTML = NewBillUI();
+		  
+				Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+				window.localStorage.setItem('user', JSON.stringify({
+					type: 'Employee',
+					email :"a@a"
+				}));
 				const onNavigate = (pathname) => {
 					document.body.innerHTML = ROUTES({ pathname })
 				} 
@@ -225,7 +247,6 @@ describe("Given I am connected as an employee", () => {
 				const fakeFile = new File(["(⌐□_□)"], "filename.png", {type: "image/png", lastModified:new Date(0)})			
 				userEvent.upload(inputFile, fakeFile);
 
-				console.log(inputFile.files.length)
 				expect(inputFile.files[0].name).toBe("filename.png");
 
 				const formNewBill = screen.getByTestId('form-new-bill');
@@ -251,6 +272,13 @@ describe("Given I am connected as an employee", () => {
 
 		describe("When an error 500 occures on submit",  () => {
 			test("Then an error should appear in the console", async () => {	
+				document.body.innerHTML = NewBillUI();
+		  
+				Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+				window.localStorage.setItem('user', JSON.stringify({
+					type: 'Employee',
+					email :"a@a"
+				}));
 				const onNavigate = (pathname) => {
 					document.body.innerHTML = ROUTES({ pathname })
 				} 
@@ -272,7 +300,6 @@ describe("Given I am connected as an employee", () => {
 				const fakeFile = new File(["(⌐□_□)"], "filename.png", {type: "image/png", lastModified:new Date(0)})			
 				userEvent.upload(inputFile, fakeFile);
 
-				console.log(inputFile.files.length)
 				expect(inputFile.files[0].name).toBe("filename.png");
 
 				const formNewBill = screen.getByTestId('form-new-bill');

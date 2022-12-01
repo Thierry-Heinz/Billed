@@ -61,9 +61,6 @@ export default class NewBill {
         fileName: this.fileName,
         status: 'pending'
       }
-      //console.log( bill.name, bill.amount, bill.date, bill.pct, file.name );
-
-       console.log("--- before store update ---")
        
        if( bill.name !== "" && bill.amount !== "" && bill.pct !== ""  && file.name !== "" ) {   
          
@@ -72,9 +69,7 @@ export default class NewBill {
          formData.append('email', email)
          
          if(this.store) {
-           
-           console.log("--- store update ---")
-           
+                      
            this.store
            .bills()
            .create({
@@ -87,19 +82,14 @@ export default class NewBill {
             this.billId = key
             this.fileUrl = fileUrl
             this.fileName = file.name
-
-            console.log("--- call to updateBill ---")
             
             this.updateBill(bill)
             
           }).catch(error => console.error(error))
         }
-          console.log("--- redirect to bills ---")
           this.onNavigate(ROUTES_PATH['Bills'])          
-      }      
-        console.log("--- after store update ---")        
+      }           
     }     
-      console.log("--- end of handle submit ---")
   }
     
     // not need to cover this function by tests
@@ -113,7 +103,6 @@ export default class NewBill {
       })
       .catch(error => console.error(error))
     }
-    console.log("--- end of updateBill ---")
   }
 
 }
